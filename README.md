@@ -1,6 +1,6 @@
 # sign-language-detector-python
 
-Test push
+Test push, number 2.
 
 Sign language detector with Python, OpenCV and Mediapipe !
 
