@@ -7,7 +7,7 @@ import numpy as np
 model_dict = pickle.load(open('./model.p', 'rb'))
 model = model_dict['model']
 
-cap = cv2.VideoCapture(2)
+cap = cv2.VideoCapture(1)
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
@@ -51,6 +51,11 @@ while True:
                 y = hand_landmarks.landmark[i].y
                 data_aux.append(x - min(x_))
                 data_aux.append(y - min(y_))
+
+        if len(data_aux) == 42:
+            cv2.imshow('frame', frame)
+            cv2.waitKey(1)
+            continue
 
         x1 = int(min(x_) * W) - 10
         y1 = int(min(y_) * H) - 10
