@@ -12,11 +12,15 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-DATA_DIR = './data'
+DATA_DIR = './ASL_Alphabet_Dataset/asl_alphabet_train'
+
+num_features = 42
 
 data = []
 labels = []
 for dir_ in os.listdir(DATA_DIR):
+    if dir_ == '.DS_Store':
+        continue
     for img_path in os.listdir(os.path.join(DATA_DIR, dir_)):
         data_aux = []
 
