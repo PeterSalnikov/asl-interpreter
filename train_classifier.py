@@ -5,8 +5,18 @@ from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
 import numpy as np
 
+num_features = 42
 
 data_dict = pickle.load(open('./data.pickle', 'rb'))
+
+for i in range(len(data_dict['data'])-1,0,-1):
+    if len(data_dict['data'][i]) != num_features:
+        # print(len(data_dict['data'][i]))
+    # print(len(data_dict['labels'][i]))
+        data_dict['data'].pop(i)   
+        data_dict['labels'].pop(i)   
+        # del data_dict['data'][i]
+        # del data_dict['labels'][i]
 
 data = np.asarray(data_dict['data'])
 labels = np.asarray(data_dict['labels'])
