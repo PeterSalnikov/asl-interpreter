@@ -15,7 +15,6 @@ mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
 
-labels_dict = {0: 'A', 1: 'B', 2: 'L'}
 while True:
 
     data_aux = []
@@ -65,7 +64,6 @@ while True:
 
         prediction = model.predict([np.asarray(data_aux)])
 
-        # predicted_character = labels_dict[int(prediction[0])]
         predicted_character = prediction[0]
 
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
