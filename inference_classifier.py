@@ -1,19 +1,35 @@
 import pickle
 
+import torch
+
 import cv2
 import mediapipe as mp
 import numpy as np
 
-model_dict = pickle.load(open('./model.p', 'rb'))
-model = model_dict['model']
+import tut_1
 
-cap = cv2.VideoCapture(1)
+from torchvision.datasets import ImageFolder
+
+
+# model_dict = pickle.load(open('./model.p', 'rb'))
+# model_dict = pickle.load(open('./nn_model.pt', 'rb'))
+# model_dict = torch.load("nn_model.pt")
+model = tut_1.ASLClassifier()
+# model = torch.load("./nn_model.pt")
+model.load_state_dict(torch.load("./nn_model.pt"))
+model.eval()
+# model = model_dict['model']
+
+cap = cv2.VideoCapture(0)
 
 mp_hands = mp.solutions.hands
 mp_drawing = mp.solutions.drawing_utils
 mp_drawing_styles = mp.solutions.drawing_styles
 
 hands = mp_hands.Hands(static_image_mode=True, min_detection_confidence=0.3)
+
+data_dir = './ASL_Alphabet_Dataset/asl_alphabet_train'
+target_to_class = {k: v for v, k in ImageFolder(data_dir).class_to_idx.items()}
 
 while True:
 
@@ -62,13 +78,28 @@ while True:
             cv2.waitKey(1)
             continue
 
-        prediction = model.predict([np.asarray(data_aux)])
+        # prediction = model.predict([np.asarray(data_aux)])
+        # prediction = model(torch.from_numpy(data_aux).float())
+        # X = torch.rand(1, 42)
 
-        predicted_character = prediction[0]
 
+
+        with torch.no_grad():
+            output = model(torch.tensor(data_aux))
+            probabilities = torch.nn.functional.softmax(output, dim=0)
+            probabilities = probabilities.cpu().numpy().flatten()
+
+        prediction = np.argmax(probabilities)
+
+        char = target_to_class[prediction]
+
+        print(char)
+
+        # predicted_character = predictions[0]
+        # print(predicted_character)
         cv2.rectangle(frame, (x1, y1), (x2, y2), (0, 0, 0), 4)
-        cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
-                    cv2.LINE_AA)
+        # cv2.putText(frame, predicted_character, (x1, y1 - 10), cv2.FONT_HERSHEY_SIMPLEX, 1.3, (0, 0, 0), 3,
+        #             cv2.LINE_AA)
 
     cv2.imshow('frame', frame)
     cv2.waitKey(1)
