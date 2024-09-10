@@ -1,7 +1,5 @@
-# sign-language-detector-python
+# asl-interpreter
 
-Test push, number 2.
+Based on Computer Vision Engineer's ASL interpreter, but with the model replaced to better predict a full ASL alphabet (rather than 3 symbols). 
 
-Sign language detector with Python, OpenCV and Mediapipe !
-
-[![Watch the video](https://img.youtube.com/vi/MJCSjXepaAM/0.jpg)](https://www.youtube.com/watch?v=MJCSjXepaAM)
+(https://img.youtube.com/vi/MJCSjXepaAM/0.jpg)](https://www.youtube.com/watch?v=MJCSjXepaAM)
